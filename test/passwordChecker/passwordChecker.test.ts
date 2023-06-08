@@ -45,4 +45,10 @@ describe('password checker test suite', () => {
     expect(actual.valid).toBe(true);
     expect(actual.reasons).toHaveLength(0);
   });
+
+  fit('Complex password to be valid', () => {
+    const actual = sut.checkPassword('aBcd12334');
+    expect(actual.valid).toBe(true);
+    expect(actual.reasons).toHaveLength(0);
+  });
 });
