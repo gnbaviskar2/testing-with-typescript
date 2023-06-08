@@ -1,4 +1,7 @@
-import { PasswordChecker } from '../../src/passwordChecker/passwordChecker';
+import {
+  PasswordChecker,
+  PasswordErrors,
+} from '../../src/passwordChecker/passwordChecker';
 
 describe('password checker test suite', () => {
   let sut: PasswordChecker;
@@ -7,33 +10,39 @@ describe('password checker test suite', () => {
     sut = new PasswordChecker();
   });
 
-  it('password with less than 8 chars be invalid', () => {
+  fit('password with less than 8 chars be invalid', () => {
     const actual = sut.checkPassword('1345567');
-    expect(actual).toBe(false);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.SHORT);
   });
 
-  it('password with 8 or more chars be valid', () => {
+  fit('password with 8 or more chars be valid', () => {
     const actual = sut.checkPassword('12345678Ab');
-    expect(actual).toBe(true);
+    expect(actual.valid).toBe(true);
+    expect(actual.reasons).toHaveLength(0);
   });
 
-  it('password with no uppercase letters be invalid', () => {
+  fit('password with no uppercase letters be invalid', () => {
     const actual = sut.checkPassword('abcd134');
-    expect(actual).toBe(false);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.NO_UPPER_CASE);
   });
 
-  it('password with uppercase letters be valid', () => {
+  fit('password with uppercase letters be valid', () => {
     const actual = sut.checkPassword('abcd134B');
-    expect(actual).toBe(true);
+    expect(actual.valid).toBe(true);
+    expect(actual.reasons).toHaveLength(0);
   });
 
-  it('password with no lowercase letters be invalid', () => {
+  fit('password with no lowercase letters be invalid', () => {
     const actual = sut.checkPassword('ABCD134');
-    expect(actual).toBe(false);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.NO_LOWER_CASE);
   });
 
-  it('password with lowercase letters be valid', () => {
+  fit('password with lowercase letters be valid', () => {
     const actual = sut.checkPassword('ABCD134b');
-    expect(actual).toBe(true);
+    expect(actual.valid).toBe(true);
+    expect(actual.reasons).toHaveLength(0);
   });
 });
